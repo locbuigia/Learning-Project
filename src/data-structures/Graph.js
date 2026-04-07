@@ -38,17 +38,65 @@ class Graph {
       console.log("Invalid vertex");
     }
   };
+
+  dfsRecursive = function (start) {
+    const result = [];
+    const visited = {};
+    const adjacencyList = this.adjacencyList;
+
+    (function dfs(v) {
+      if (adjacencyList[v].length === 0) {
+        return;
+      }
+
+      visited[v] = true;
+      result.push(v);
+
+      for (let neighbor of adjacencyList[v]) {
+        if (!visited[neighbor]) {
+          dfs(neighbor, adjacencyList);
+        }
+      }
+    })(start);
+
+    return result;
+  };
+
+  dfsIterative = function (start) {
+    const stack = [start];
+    const result = [];
+    const visited = {};
+
+    while (stack.length > 0) {
+      const vertex = stack.pop();
+
+      if (!visited[vertex]) {
+        visited[vertex] = true;
+        result.push(vertex);
+        stack.push(...this.adjacencyList[vertex]);
+      }
+    }
+    return result;
+  };
 }
 
 const g = new Graph();
 
-g.addVertex("Tokyo");
-g.addVertex("Dallas");
-g.addVertex("Aspen");
+g.addVertex("A");
+g.addVertex("B");
+g.addVertex("C");
+g.addVertex("D");
+g.addVertex("E");
+g.addVertex("F");
 
-g.addEdge("Tokyo", "Dallas");
-g.addEdge("Aspen", "Dallas");
+g.addEdge("A", "B");
+g.addEdge("A", "C");
+g.addEdge("B", "D");
+g.addEdge("C", "E");
+g.addEdge("D", "E");
+g.addEdge("D", "F");
+g.addEdge("E", "F");
 
-g.removeVertex("Aspen");
+// console.log(g.adjacencyList["A"]);
 
-console.log(g);
+console.log(g.dfsIterative("A"));
