@@ -54,7 +54,7 @@ class Graph {
 
       for (let neighbor of adjacencyList[v]) {
         if (!visited[neighbor]) {
-          dfs(neighbor, adjacencyList);
+          dfs(neighbor);
         }
       }
     })(start);
@@ -78,6 +78,24 @@ class Graph {
     }
     return result;
   };
+
+  bfs = function (start) {
+    const queue = [start];
+    const result = [];
+    const visited = {};
+
+    while (queue.length) {
+      const vertex = queue.shift();
+
+      if (!visited[vertex]) {
+        result.push(vertex);
+        visited[vertex] = true;
+        queue.push(...this.adjacencyList[vertex]);
+      }
+    }
+
+    return result;
+  };
 }
 
 const g = new Graph();
@@ -99,4 +117,4 @@ g.addEdge("E", "F");
 
 // console.log(g.adjacencyList["A"]);
 
-console.log(g.dfsIterative("A"));
+console.log(g.bfs("A"));

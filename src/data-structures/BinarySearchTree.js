@@ -279,6 +279,52 @@ class BST {
     traverse(current); // Call the helper function with the current variable
     return visited; // Return the list of values
   }
+
+  preOrderDFSStack() {
+    const stack = [this.root];
+    const visited = [];
+    while (stack.length) {
+      const current = stack.pop();
+      visited.push(current.value);
+      if (current.left) stack.push(current.left);
+      if (current.right) stack.push(current.right);
+    }
+    return visited;
+  }
+
+  inOrderDFSStack() {
+    const stack = [];
+    const visited = [];
+    let current = this.root;
+
+    while (current !== null || stack.length) {
+      while (current !== null) {
+        stack.push(current);
+        current = current.left;
+      }
+      current = stack.pop();
+      visited.push(current.value);
+      current = current.right;
+    }
+    return visited;
+  }
+
+  postOrderDFSStack() {
+    const stack = [];
+    const visited = [];
+    let current = this.root;
+
+    while (current !== null && stack.length) {
+      while (current !== null) {
+        stack.push(current);
+        current = current.left;
+      }
+      current = stack.pop();
+      visited.push(current.value);
+      current = current.right;
+    }
+    return visited;
+  }
 }
 
 let binarySearchTree = new BST();
@@ -289,4 +335,4 @@ binarySearchTree.insert(3);
 binarySearchTree.insert(8);
 binarySearchTree.insert(20);
 
-console.log(binarySearchTree.inOrderDFS());
+console.log(binarySearchTree.inOrderDFSStack());
