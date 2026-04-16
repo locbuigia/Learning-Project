@@ -39,6 +39,30 @@ const Button = memo(
   }
 );
 
+const TodoItem = memo(
+  ({
+    todo,
+    index,
+    removeTodo,
+  }: {
+    todo: string;
+    index: number;
+    removeTodo: (index: number) => void;
+  }) => {
+    console.log("TodoItem render:", todo);
+    const handleRemove = useCallback(() => {
+      removeTodo(index);
+    }, []);
+
+    return (
+      <>
+        {todo}
+        <Button onClick={handleRemove} label="Remove" disabled={false} />
+      </>
+    );
+  }
+);
+
 const TodoList = () => {
   const [todos, setTodos] = useState<string[]>(() => {
     if (!storage) return [];
@@ -96,12 +120,7 @@ const TodoList = () => {
       <ul>
         {todos.map((todo, index) => (
           <li key={index}>
-            {todo}
-            <Button
-              onClick={() => removeTodo(index)}
-              label="Remove"
-              disabled={false}
-            />
+            <TodoItem todo={todo} index={index} removeTodo={removeTodo} />
           </li>
         ))}
       </ul>
